@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Home',
       theme: ThemeData(
-        colorScheme: const ColorScheme.highContrastLight(),
+        primaryColor: Colors.blue,
         useMaterial3: true,
         textTheme: const TextTheme(
             titleLarge: TextStyle(color: Colors.white, fontSize: 25,fontWeight: FontWeight.bold),
@@ -40,7 +40,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).primaryColor,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
         title: Text(title),
         centerTitle: true,

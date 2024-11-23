@@ -3,6 +3,7 @@ import 'package:casa_fruit_scale_codes/widgets/id_spin_box.dart';
 import 'package:casa_fruit_scale_codes/widgets/name_text_field.dart';
 import 'package:flutter/material.dart';
 
+import '../objects/scale_code.dart';
 import '../singletons/database.dart';
 import '../widgets/default_material_button.dart';
 
@@ -24,7 +25,18 @@ class _AddScreenState extends State<AddScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
-  void confirmPressed() {
+  void failedAlert(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: ListTile(
+          title: const Text("Failed"),
+          subtitle: Text(text),
+        ),
+      ),
+    );
+  }
+
+  void confirmPressed() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
@@ -32,12 +44,20 @@ class _AddScreenState extends State<AddScreen> {
       String name = nameController.text;
       String description = descriptionController.text;
 
+      if (!await dbManager.checkCode(id)) {
+        failedAlert("Already exist");
+        return;
+      }
+      dbManager.insertScaleCode(
+          ScaleCode(id: id, name: name, description: description));
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('$name Created with id: $id!'),
-
         ),
       );
+    } else {
+      failedAlert("General error code");
     }
   }
 
@@ -45,7 +65,7 @@ class _AddScreenState extends State<AddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).primaryColor,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
         title: const Text(
           "Add Code",
@@ -79,8 +99,7 @@ class _AddScreenState extends State<AddScreen> {
                       .textTheme
                       .bodyLarge!
                       .apply(color: Colors.black)),
-                DescriptionTextField(controller: descriptionController),
-
+              DescriptionTextField(controller: descriptionController),
               DefaultMaterialButton(
                 text: "Confirm",
                 fcn: confirmPressed,

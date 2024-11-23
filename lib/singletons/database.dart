@@ -32,7 +32,6 @@ class DatabaseManager {
       path,
       version: 1,
       onCreate: (db, version) async {
-        // Create tables and initialize data here
         await db.execute(
           'CREATE TABLE $CodesTableName (id INTEGER PRIMARY KEY, name TEXT NOT NULL, description TEXT)',
         );
