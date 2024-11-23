@@ -53,45 +53,47 @@ class _SearchScreenState extends State<SearchScreen> {
       body: _lst != null
           ? Padding(
             padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            child: ListView.builder(
-                itemCount: _lst!.length,
-                prototypeItem: ListTile(
-                  title: Text(_lst!.first.name),
-                ),
-            
-                itemBuilder: (context, index) {
-                  ScaleCode sc = _lst![index];
-                  return Material(
-                      elevation: 10,
-                      borderRadius: BorderRadius.circular(16),
-            
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
+            child: SingleChildScrollView(
+              child: ListView.builder(
+                shrinkWrap: true,
+                  itemCount: _lst!.length,
+                  prototypeItem: ListTile(
+                    title: Text(_lst!.first.name),
+                  ),
 
-                            radius: 50,
-                            child: Text(sc.id.toString(), style: const TextStyle(color: Colors.white),),
-                          ),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                sc.name,
-                                style: Theme.of(context).textTheme.bodyLarge!.apply(color: Colors.black),
-                              ),
-                              if (sc.description.isNotEmpty) Text(sc.description,)  ,
-                            ],
-            
-                          ),
-                          IconButton(onPressed: () {}, icon:Icon(Icons.edit) ),
-            
-                        ],
-                      ),
-                  );
-                },
-              ),
+                  itemBuilder: (context, index) {
+                    ScaleCode sc = _lst![index];
+                    return Material(
+                        elevation: 10,
+                        borderRadius: BorderRadius.circular(16),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Theme.of(context).primaryColor,
+
+                              radius: 50,
+                              child: Text(sc.id.toString(), style: const TextStyle(color: Colors.white),),
+                            ),
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  sc.name,
+                                  style: Theme.of(context).textTheme.bodyLarge!.apply(color: Colors.black),
+                                ),
+                                if (sc.description.isNotEmpty) Text(sc.description,)  ,
+                              ],
+
+                            ),
+                            IconButton(onPressed: () {}, icon:Icon(Icons.edit) ),
+
+                          ],
+                        ),
+                    );
+                  },
+                ),
+            ),
           )
           : const SizedBox.shrink(),
       // This trailing comma makes auto-formatting nicer for build methods.
