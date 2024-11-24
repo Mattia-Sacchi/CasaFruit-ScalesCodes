@@ -1,16 +1,20 @@
 # casa_fruit_scale_codes
 
-A new Flutter project.
+A Flutter Project
 
-## Getting Started
+The purpose od this app is to help my father in is job in witch he has to memorize a lot numbers and the relative object.
+This repository is public with the only purpose of tutorial for me and other,
 
-This project is a starting point for a Flutter application.
+In other to run:
+```
+git clone git@github.com:Irattus/CasaFruit-PhoneApp.git
+```
+Open the folder with Visual Studio code with flutter extension and type in the terminal
+```
+flutter run
+```
+The app will run in the avaiable emulator or android/ios device connected
 
-A few resources to get you started if this is your first Flutter project:
+Or open the folder with Android studio with the flutter plugin and press run
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+The app will run in the avaiable emulator or android/ios device connected
