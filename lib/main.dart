@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: Colors.blue,
         useMaterial3: true,
+        canvasColor: Colors.white,
         textTheme: const TextTheme(
           titleLarge: TextStyle(
               color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
@@ -47,6 +48,7 @@ class MyHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
         backgroundColor: Theme.of(context).primaryColor,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
         title: Text(title),
@@ -136,7 +138,7 @@ class MyHomePage extends StatelessWidget {
                       CircleAvatar(
                         backgroundColor: Colors.transparent,
                         child: Image.network('https://cdn-icons-png.flaticon.com/128/2111/2111425.png', width: 32, height: 32),),
-                        Text('Github')
+                        const Text('Github')
                     ],
                   ),
 

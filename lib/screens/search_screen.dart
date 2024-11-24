@@ -32,7 +32,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
       appBar: AppBar(
         actionsIconTheme: const IconThemeData(color: Colors.white),
-        iconTheme: const IconThemeData(color: Colors.white),
+        iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
         backgroundColor: Theme.of(context).primaryColor,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
         title: const Text('Codes'),
@@ -52,27 +52,25 @@ class _SearchScreenState extends State<SearchScreen> {
       ),
       body: _lst != null
           ? Padding(
-            padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             child: SingleChildScrollView(
-              child: ListView.builder(
+              child: ListView.separated(
+                separatorBuilder: (context, index) {
+                  return const SizedBox(height: 20,);
+                },
                 shrinkWrap: true,
                   itemCount: _lst!.length,
-                  prototypeItem: ListTile(
-                    title: Text(_lst!.first.name),
-                  ),
-
                   itemBuilder: (context, index) {
                     ScaleCode sc = _lst![index];
                     return Material(
                         elevation: 10,
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(35),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             CircleAvatar(
                               backgroundColor: Theme.of(context).primaryColor,
-
-                              radius: 50,
+                              radius: 35,
                               child: Text(sc.id.toString(), style: const TextStyle(color: Colors.white),),
                             ),
                             Column(

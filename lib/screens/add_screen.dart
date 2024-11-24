@@ -44,7 +44,7 @@ class _AddScreenState extends State<AddScreen> {
       String name = nameController.text;
       String description = descriptionController.text;
 
-      if (!await dbManager.checkCode(id)) {
+      if (await dbManager.checkCode(id)) {
         failedAlert("Already exist");
         return;
       }
@@ -67,6 +67,7 @@ class _AddScreenState extends State<AddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
         backgroundColor: Theme.of(context).primaryColor,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
         title: const Text(
