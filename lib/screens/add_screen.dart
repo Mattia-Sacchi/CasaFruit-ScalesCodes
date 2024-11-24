@@ -7,6 +7,7 @@ import '../objects/scale_code.dart';
 import '../objects/utils.dart';
 import '../singletons/database.dart';
 import '../widgets/default_material_button.dart';
+import 'manage_screen.dart';
 
 class AddScreen extends StatefulWidget {
   const AddScreen({
@@ -27,6 +28,23 @@ class _AddScreenState extends State<AddScreen> {
   final _formKey = GlobalKey<FormState>();
 
   final double _spaceBetween = 10;
+
+  @override
+  void initState() {
+    dbManager.scaleCodes().then(
+        (scaleCodes)
+        {
+          int i;
+          for(i = 1; scaleCodes.any((element) {return element.id == i; } ) ; i++);
+          setState(() {
+            idController.text = i.toString();
+          });
+        }
+
+    );
+
+    super.initState();
+  }
 
 
 
@@ -49,6 +67,15 @@ class _AddScreenState extends State<AddScreen> {
         SnackBar(
           content: Text('$name Created with id: $id!'),
         ),
+
+      );
+
+      Navigator.of(context).pop();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => const ManageScreen()),
       );
     } else {
       failedAlert(context,"General error code");

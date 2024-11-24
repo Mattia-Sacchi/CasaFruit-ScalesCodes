@@ -5,11 +5,13 @@ class AutocompleteTextField extends StatefulWidget {
   final Function(String) onItemSelect;
   final InputDecoration? decoration;
   final String? Function(String?)? validator;
+  final TextEditingController controller;
 
   const AutocompleteTextField(
       {Key? key,
         required this.items,
         required this.onItemSelect,
+        required this.controller,
         this.decoration,
         this.validator})
       : super(key: key);
@@ -23,8 +25,6 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
   late OverlayEntry _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   late List<String> _filteredItems;
-
-  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -46,7 +46,7 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
       link: _layerLink,
       child: TextFormField(
         style: Theme.of(context).textTheme.bodyMedium,
-        controller: _controller,
+        controller: widget.controller,
         focusNode: _focusNode,
         onChanged: _onFieldChange,
         decoration: widget.decoration,
@@ -81,6 +81,7 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
             offset: Offset(0.0, size.height + 5.0),
             child: Material(
               elevation: 4.0,
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(25),bottomRight: Radius.circular(25)),
               child: Container(
                 constraints: const BoxConstraints(maxHeight: 200),
                 child: ListView.builder(
@@ -90,7 +91,7 @@ class _AutocompleteTextFieldState extends State<AutocompleteTextField> {
                     return ListTile(
                       title: Text(item),
                       onTap: () {
-                        _controller.text = item;
+                        widget.controller.text = item;
                         _focusNode.unfocus();
                         widget.onItemSelect(item);
                       },

@@ -1,3 +1,5 @@
+import 'package:casa_fruit_scale_codes/objects/utils.dart';
+import 'package:casa_fruit_scale_codes/screens/edit_screen.dart';
 import 'package:casa_fruit_scale_codes/singletons/database.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +25,9 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void reload() async {
-    _lst = await DatabaseManager().scaleCodes();
+    List<ScaleCode> temp = await DatabaseManager().scaleCodes();
+    temp.sort((a, b) => a.id.compareTo(b.id));
+    _lst = temp;
     setState(() {});
   }
 
@@ -44,7 +48,7 @@ class _SearchScreenState extends State<SearchScreen> {
             onPressed: () {
               showSearch(
                 context: context,
-                delegate: CodesSearchDelegate(),
+                delegate: _lst != null  ? CodesSearchDelegate(lst: _lst!) : CodesSearchDelegate(lst: []),
               );
             },
           ),
@@ -54,43 +58,7 @@ class _SearchScreenState extends State<SearchScreen> {
           ? Padding(
             padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
             child: SingleChildScrollView(
-              child: ListView.separated(
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 20,);
-                },
-                shrinkWrap: true,
-                  itemCount: _lst!.length,
-                  itemBuilder: (context, index) {
-                    ScaleCode sc = _lst![index];
-                    return Material(
-                        elevation: 10,
-                        borderRadius: BorderRadius.circular(35),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvatar(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              radius: 35,
-                              child: Text(sc.id.toString(), style: const TextStyle(color: Colors.white),),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  sc.name,
-                                  style: Theme.of(context).textTheme.bodyLarge!.apply(color: Colors.black),
-                                ),
-                                if (sc.description.isNotEmpty) Text(sc.description,)  ,
-                              ],
-
-                            ),
-                            IconButton(onPressed: () {}, icon:Icon(Icons.edit) ),
-
-                          ],
-                        ),
-                    );
-                  },
-                ),
+              child: buildSearchPage(context, _lst!),
             ),
           )
           : const SizedBox.shrink(),

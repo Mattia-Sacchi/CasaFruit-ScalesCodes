@@ -1,3 +1,4 @@
+import 'package:casa_fruit_scale_codes/screens/search_screen.dart';
 import 'package:casa_fruit_scale_codes/widgets/description_text_field.dart';
 import 'package:casa_fruit_scale_codes/widgets/name_text_field.dart';
 import 'package:flutter/material.dart';
@@ -5,13 +6,16 @@ import 'package:flutter/material.dart';
 import '../objects/scale_code.dart';
 import '../singletons/database.dart';
 import '../widgets/default_material_button.dart';
+import 'manage_screen.dart';
 
 class EditScreen extends StatefulWidget {
   const EditScreen({
-    super.key, required this.sc,
+    super.key, required this.sc,this.fromSearchScreen = false
   });
 
   final ScaleCode sc;
+
+  final bool fromSearchScreen;
 
   @override
   State<EditScreen> createState() => _EditScreenState();
@@ -64,6 +68,13 @@ class _EditScreenState extends State<EditScreen> {
       );
 
       Navigator.of(context).pop();
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => widget.fromSearchScreen ? const SearchScreen() : const ManageScreen()),
+      );
+
 
     } else {
       failedAlert("General error code");

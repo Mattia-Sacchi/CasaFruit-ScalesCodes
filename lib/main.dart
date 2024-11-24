@@ -61,7 +61,7 @@ class MyHomePage extends StatelessWidget {
           child: Card(
             elevation: 10,
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+              padding: const EdgeInsets.only(top: 20,bottom: 100, right: 10, left: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
@@ -81,6 +81,14 @@ class MyHomePage extends StatelessWidget {
                                 builder: (context) => const ManageScreen()),
                           ),
                       icon: Icons.edit),
+                  const Flexible(flex: 1,child: SizedBox.expand(),),
+                  
+                  FractionallySizedBox(
+                    widthFactor: 0.8,
+                    child: Image.network("https://static.vecteezy.com/system/resources/thumbnails/046/822/483/small_2x/a-vibrant-assortment-of-fresh-fruits-and-vegetables-isolated-on-a-transparent-background-free-png.png"),
+                  ),
+
+
                 ],
               ),
             ),
@@ -115,12 +123,12 @@ class MyHomePage extends StatelessWidget {
                 ],
               )),
               ListTile(
-                onTap: () {},
+                onTap: () => throw UnimplementedError(),
                 leading: const Icon(Icons.import_export),
                 title: const Text("Import"),
               ),
               ListTile(
-                onTap: () {},
+                onTap: () => throw UnimplementedError(),
                 leading: const Icon(Icons.import_export),
                 title: const Text("Export"),
               ),

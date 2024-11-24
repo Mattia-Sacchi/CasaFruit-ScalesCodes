@@ -30,6 +30,7 @@ class _ManageScreenState extends State<ManageScreen> {
   Map<String, ScaleCode>? _strToSC;
   List<String> _codesStrings = [];
   String _selectedItem = "";
+  TextEditingController _codeController = TextEditingController();
 
   void reload() {
     dbManager.scaleCodes().then((scaleCodes) {
@@ -37,6 +38,8 @@ class _ManageScreenState extends State<ManageScreen> {
         _strToSC = <String, ScaleCode>{};
 
         scaleCodes.sort((a, b) => a.id.compareTo(b.id));
+        _codesStrings.clear();
+        _strToSC!.clear();
         for (var elem in scaleCodes) {
           String codeString = '${elem.id} ${elem.name}';
           _codesStrings.add(codeString);
@@ -55,6 +58,7 @@ class _ManageScreenState extends State<ManageScreen> {
   void buttonClicked(ButtonId id) {
     switch (id) {
       case ButtonId.BI_Add:
+        Navigator.of(context).pop();
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const AddScreen()));
         break;
@@ -63,6 +67,7 @@ class _ManageScreenState extends State<ManageScreen> {
           failedAlert(context, "to load selected item");
           return;
         }
+        Navigator.of(context).pop();
 
         Navigator.push(
             context,
@@ -70,11 +75,13 @@ class _ManageScreenState extends State<ManageScreen> {
                 builder: (context) =>
                     EditScreen(sc: _strToSC![_selectedItem]!)));
 
+
       case ButtonId.BI_Remove:
         if (_selectedItem.isEmpty) {
           failedAlert(context, "to load selected item");
           return;
         }
+
 
         showDialog(
           context: context,
@@ -88,13 +95,18 @@ class _ManageScreenState extends State<ManageScreen> {
                   onPressed: () async {
                     await dbManager.deleteScaleCode(_strToSC![_selectedItem]!);
                     reload();
-                    Navigator.of(context).pop(); // Close the dialog
+                    setState(() {
+                      _selectedItem = "";
+                      _codeController.text = "";
+                    });
+
+                    Navigator.of(context).pop();
                   },
                   child: const Text('Yes'),
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop(); // Close the dialog
+                    Navigator.of(context).pop();
                   },
                   child: const Text('No'),
                 ),
@@ -152,6 +164,7 @@ class _ManageScreenState extends State<ManageScreen> {
                     _strToSC != null
                         ? AutocompleteTextField(
                             items: _codesStrings,
+                            controller: _codeController,
                             decoration: InputDecoration(
                                 label: const Text("Code Id"),
                                 border: OutlineInputBorder(

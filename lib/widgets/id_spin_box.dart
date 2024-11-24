@@ -15,7 +15,6 @@ class _IdSpinBoxState extends State<IdSpinBox>
 {
   @override
   void initState() {
-    widget.controller.text = "1";
     super.initState();
 
   }
