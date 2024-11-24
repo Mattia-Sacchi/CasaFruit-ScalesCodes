@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 
 
 class NameTextField extends StatefulWidget {
-  const NameTextField({super.key, required this.controller,});
+  const NameTextField({super.key, required this.controller,this.startName});
 
   final TextEditingController controller;
+  final String? startName;
 
   @override
   State<NameTextField> createState() => _NameTextFieldState();
@@ -14,7 +15,7 @@ class _NameTextFieldState extends State<NameTextField>
 {
   @override
   void initState() {
-    widget.controller.text = "";
+    widget.controller.text = (widget.startName ?? "");
     super.initState();
 
   }

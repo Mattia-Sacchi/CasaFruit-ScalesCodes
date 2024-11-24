@@ -1,24 +1,23 @@
 import 'package:casa_fruit_scale_codes/widgets/description_text_field.dart';
-import 'package:casa_fruit_scale_codes/widgets/id_spin_box.dart';
 import 'package:casa_fruit_scale_codes/widgets/name_text_field.dart';
 import 'package:flutter/material.dart';
 
 import '../objects/scale_code.dart';
-import '../objects/utils.dart';
 import '../singletons/database.dart';
 import '../widgets/default_material_button.dart';
 
-class AddScreen extends StatefulWidget {
-  const AddScreen({
-    super.key,
+class EditScreen extends StatefulWidget {
+  const EditScreen({
+    super.key, required this.sc,
   });
 
+  final ScaleCode sc;
+
   @override
-  State<AddScreen> createState() => _AddScreenState();
+  State<EditScreen> createState() => _EditScreenState();
 }
 
-class _AddScreenState extends State<AddScreen> {
-  TextEditingController idController = TextEditingController();
+class _EditScreenState extends State<EditScreen> {
   TextEditingController nameController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
@@ -28,30 +27,46 @@ class _AddScreenState extends State<AddScreen> {
 
   final double _spaceBetween = 10;
 
+  @override
+  void initState() {
+    super.initState();
+  }
 
+
+
+  void failedAlert(String text) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: ListTile(
+          title: const Text("Failed"),
+          subtitle: Text(text),
+        ),
+      ),
+    );
+  }
 
   void confirmPressed() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
 
-      int id = int.parse(idController.text);
-      String name = nameController.text;
-      String description = descriptionController.text;
+      widget.sc.name = nameController.text;
+      widget.sc.description = descriptionController.text;
 
-      if (await dbManager.checkCode(id)) {
-        failedAlert(context,"Already exist");
+      if (!await dbManager.checkCode(widget.sc.id)) {
+        failedAlert("Synchronization Error");
         return;
       }
-      dbManager.insertScaleCode(
-          ScaleCode(id: id, name: name, description: description));
-
+      dbManager.updateScaleCode(widget.sc);
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('$name Created with id: $id!'),
+          content: Text('Updated ${widget.sc.name} with success'),
         ),
       );
+
+      Navigator.of(context).pop();
+
     } else {
-      failedAlert(context,"General error code");
+      failedAlert("General error code");
     }
   }
 
@@ -63,8 +78,8 @@ class _AddScreenState extends State<AddScreen> {
         iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
         backgroundColor: Theme.of(context).primaryColor,
         titleTextStyle: Theme.of(context).textTheme.titleLarge,
-        title: const Text(
-          "Add Code",
+        title: Text(
+          "Edit Code ${widget.sc.id}",
         ),
         centerTitle: true,
       ),
@@ -81,29 +96,21 @@ class _AddScreenState extends State<AddScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
-                    Text("Insert the code:",
+                    Text("Change name:",
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!
                             .apply(color: Colors.black)),
                     SizedBox(height: _spaceBetween,),
-                    IdSpinBox(controller: idController),
+                    NameTextField(controller: nameController,startName: widget.sc.name),
                     SizedBox(height: _spaceBetween*2,),
-                    Text("Insert the name:",
+                    Text("Change description:",
                         style: Theme.of(context)
                             .textTheme
                             .bodyLarge!
                             .apply(color: Colors.black)),
                     SizedBox(height: _spaceBetween,),
-                    NameTextField(controller: nameController),
-                    SizedBox(height: _spaceBetween*2,),
-                    Text("Insert a description:",
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyLarge!
-                            .apply(color: Colors.black)),
-                    SizedBox(height: _spaceBetween,),
-                    DescriptionTextField(controller: descriptionController),
+                    DescriptionTextField(controller: descriptionController, startDescription: widget.sc.description,),
                     const Flexible(flex: 1,child: SizedBox.expand(),),
                     DefaultMaterialButton(
                       text: "Confirm",

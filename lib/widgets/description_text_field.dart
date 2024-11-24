@@ -4,9 +4,11 @@ class DescriptionTextField extends StatefulWidget {
   const DescriptionTextField({
     super.key,
     required this.controller,
+    this.startDescription,
   });
 
   final TextEditingController controller;
+  final String? startDescription;
 
   @override
   State<DescriptionTextField> createState() => _DescriptionTextFieldState();
@@ -15,7 +17,7 @@ class DescriptionTextField extends StatefulWidget {
 class _DescriptionTextFieldState extends State<DescriptionTextField> {
   @override
   void initState() {
-    widget.controller.text = "";
+    widget.controller.text = widget.startDescription ?? "";
     super.initState();
   }
 

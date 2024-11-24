@@ -72,7 +72,7 @@ class MyHomePage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const SearchScreen()),
                           ),
-                      icon: null),
+                      icon: Icons.view_agenda_rounded),
                   DefaultMaterialButton(
                       text: "Manage Codes",
                       fcn: () => Navigator.push(
@@ -80,7 +80,7 @@ class MyHomePage extends StatelessWidget {
                             MaterialPageRoute(
                                 builder: (context) => const ManageScreen()),
                           ),
-                      icon: null),
+                      icon: Icons.edit),
                 ],
               ),
             ),

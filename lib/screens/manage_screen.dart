@@ -1,6 +1,12 @@
+import 'package:casa_fruit_scale_codes/objects/scale_code.dart';
+import 'package:casa_fruit_scale_codes/objects/utils.dart';
 import 'package:casa_fruit_scale_codes/screens/add_screen.dart';
+import 'package:casa_fruit_scale_codes/screens/edit_screen.dart';
+import 'package:casa_fruit_scale_codes/singletons/database.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
+import '../widgets/autocomplete_text_field.dart';
 import '../widgets/default_material_button.dart';
 
 class ManageScreen extends StatefulWidget {
@@ -19,6 +25,33 @@ enum ButtonId {
 }
 
 class _ManageScreenState extends State<ManageScreen> {
+  DatabaseManager dbManager = DatabaseManager();
+
+  Map<String, ScaleCode>? _strToSC;
+  List<String> _codesStrings = [];
+  String _selectedItem = "";
+
+  void reload() {
+    dbManager.scaleCodes().then((scaleCodes) {
+      setState(() {
+        _strToSC = <String, ScaleCode>{};
+
+        scaleCodes.sort((a, b) => a.id.compareTo(b.id));
+        for (var elem in scaleCodes) {
+          String codeString = '${elem.id} ${elem.name}';
+          _codesStrings.add(codeString);
+          _strToSC![codeString] = elem;
+        }
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    reload();
+    super.initState();
+  }
+
   void buttonClicked(ButtonId id) {
     switch (id) {
       case ButtonId.BI_Add:
@@ -26,32 +59,49 @@ class _ManageScreenState extends State<ManageScreen> {
             MaterialPageRoute(builder: (context) => const AddScreen()));
         break;
       case ButtonId.BI_Edit:
+        if (_selectedItem.isEmpty) {
+          failedAlert(context, "to load selected item");
+          return;
+        }
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    EditScreen(sc: _strToSC![_selectedItem]!)));
+
       case ButtonId.BI_Remove:
+        if (_selectedItem.isEmpty) {
+          failedAlert(context, "to load selected item");
+          return;
+        }
+
         showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(
-                  id == ButtonId.BI_Edit ? 'Edit' : 'Remove',
-                  style: Theme.of(context).textTheme.titleLarge!.apply(
-                        color: Colors.black,
-                      ),
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Are you sure'),
+              content:
+                  Text('Do you want to remove $_selectedItem\nFrom the list?'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () async {
+                    await dbManager.deleteScaleCode(_strToSC![_selectedItem]!);
+                    reload();
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('Yes'),
                 ),
-                content: Text('Select'),
-                actions: <Widget>[
-                  TextButton(
-                    onPressed: () {},
-                    child: Text('Ok'),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: Text('Close'),
-                  ),
-                ],
-              );
-            });
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop(); // Close the dialog
+                  },
+                  child: const Text('No'),
+                ),
+              ],
+            );
+          },
+        );
     }
   }
 
@@ -78,14 +128,63 @@ class _ManageScreenState extends State<ManageScreen> {
                   text: "Add",
                   fcn: () => buttonClicked(ButtonId.BI_Add),
                   icon: Icons.add),
-              DefaultMaterialButton(
-                  text: "Edit",
-                  fcn: () => buttonClicked(ButtonId.BI_Edit),
-                  icon: Icons.edit),
-              DefaultMaterialButton(
-                  text: "Remove",
-                  fcn: () => buttonClicked(ButtonId.BI_Remove),
-                  icon: Icons.delete),
+              const SizedBox(
+                height: 25,
+              ),
+              Material(
+                elevation: 10,
+                borderRadius: BorderRadius.circular(35),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 30.0, horizontal: 20),
+                  child: Column(children: [
+                    Text(
+                      "Select Code and the action:",
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                    Text(
+                      "Selected Code: $_selectedItem",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    _strToSC != null
+                        ? AutocompleteTextField(
+                            items: _codesStrings,
+                            decoration: InputDecoration(
+                                label: const Text("Code Id"),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            validator: (val) {
+                              if (_codesStrings.contains(val)) {
+                                return null;
+                              } else {
+                                return 'Invalid Code';
+                              }
+                            },
+                            onItemSelect: (selected) {
+                              print(selected);
+                              setState(() {
+                                _selectedItem = selected;
+                              });
+                            },
+                          )
+                        : const SizedBox.shrink(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    DefaultMaterialButton(
+                        text: "Edit",
+                        fcn: () => buttonClicked(ButtonId.BI_Edit),
+                        icon: Icons.edit),
+                    DefaultMaterialButton(
+                        text: "Remove",
+                        fcn: () => buttonClicked(ButtonId.BI_Remove),
+                        icon: Icons.delete),
+                  ]),
+                ),
+              ),
               const Flexible(flex: 1, child: SizedBox.expand()),
               DefaultMaterialButton(
                   text: "Home Page",

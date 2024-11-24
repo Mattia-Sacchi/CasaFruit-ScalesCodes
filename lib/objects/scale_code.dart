@@ -2,10 +2,10 @@
 
 class ScaleCode {
   final int id;
-  final String name;
-  final String description;
+  String name;
+  String description;
 
-  const ScaleCode({
+  ScaleCode({
     required this.id,
     required this.name,
     required this.description,
