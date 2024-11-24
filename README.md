@@ -7,7 +7,7 @@ This repository is public with the only purpose of tutorial for me and other,
 
 In other to run:
 ```
-git clone git@github.com:Irattus/CasaFruit-PhoneApp.git
+git clone https://github.com/Mattia-Sacchi/CasaFruit-ScalesCodes.git
 ```
 Open the folder with Visual Studio code with flutter extension and type in the terminal
 ```
