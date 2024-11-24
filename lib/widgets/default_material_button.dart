@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DefaultMaterialButton extends StatefulWidget {
+class DefaultMaterialButton extends StatelessWidget {
   const DefaultMaterialButton(
       {super.key, required this.text, required this.fcn, this.icon});
 
@@ -9,16 +9,11 @@ class DefaultMaterialButton extends StatefulWidget {
   final IconData? icon;
 
   @override
-  State<DefaultMaterialButton> createState() => _DefaultMaterialButtonState();
-}
-
-class _DefaultMaterialButtonState extends State<DefaultMaterialButton> {
-  @override
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       widthFactor: 0.8,
       child: IconButton(
-        onPressed: widget.fcn,
+        onPressed: fcn,
         highlightColor: Colors.blueAccent,
         icon: Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -27,24 +22,24 @@ class _DefaultMaterialButtonState extends State<DefaultMaterialButton> {
               borderRadius: BorderRadius.circular(35),
             ),
             child: Row(
-              mainAxisAlignment: widget.icon != null
+              mainAxisAlignment: icon != null
                   ? MainAxisAlignment.start
                   : MainAxisAlignment.center,
               children: [
-                widget.icon != null
+                icon != null
                     ? Icon(
-                        widget.icon!,
-                        color: Colors.white,
-                      )
+                  icon!,
+                  color: Colors.white,
+                )
                     : const SizedBox.shrink(),
-                widget.icon != null
+                icon != null
                     ? const SizedBox(
-                        width: 10,
-                      )
+                  width: 10,
+                )
                     : const SizedBox.shrink(),
                 Text(
                   textAlign: TextAlign.center,
-                  widget.text,
+                  text,
                   style: const TextStyle(
                       color: Colors.white,
                       fontSize: 25,
@@ -56,3 +51,5 @@ class _DefaultMaterialButtonState extends State<DefaultMaterialButton> {
     );
   }
 }
+
+

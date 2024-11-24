@@ -15,7 +15,7 @@ class _IdSpinBoxState extends State<IdSpinBox>
 {
   @override
   void initState() {
-    widget.controller.text = "01";
+    widget.controller.text = "1";
     super.initState();
 
   }
@@ -24,6 +24,10 @@ class _IdSpinBoxState extends State<IdSpinBox>
   Widget build(BuildContext context) {
     return FractionallySizedBox(widthFactor: 0.8,child:
       TextFormField(controller: widget.controller,
+        decoration: InputDecoration(
+            label: const Text("Id"),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10))),
         validator: (value)
         {
 

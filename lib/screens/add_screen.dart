@@ -61,6 +61,8 @@ class _AddScreenState extends State<AddScreen> {
     }
   }
 
+  final double _spaceBetween = 10;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,39 +75,51 @@ class _AddScreenState extends State<AddScreen> {
         centerTitle: true,
       ),
       body: Center(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              const Flexible(
-                flex: 1,
-                child: SizedBox.shrink(),
+        child: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Form(
+            key: _formKey,
+            child: Material(
+              elevation: 10,
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    Text("Insert the code:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .apply(color: Colors.black)),
+                    SizedBox(height: _spaceBetween,),
+                    IdSpinBox(controller: idController),
+                    SizedBox(height: _spaceBetween*2,),
+                    Text("Insert the name:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .apply(color: Colors.black)),
+                    SizedBox(height: _spaceBetween,),
+                    NameTextField(controller: nameController),
+                    SizedBox(height: _spaceBetween*2,),
+                    Text("Insert a description:",
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyLarge!
+                            .apply(color: Colors.black)),
+                    SizedBox(height: _spaceBetween,),
+                    DescriptionTextField(controller: descriptionController),
+                    const Flexible(flex: 1,child: SizedBox.expand(),),
+                    DefaultMaterialButton(
+                      text: "Confirm",
+                      fcn: confirmPressed,
+                      icon: null,
+                    ),
+                  ],
+                ),
               ),
-              Text("Insert the code:",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .apply(color: Colors.black)),
-              IdSpinBox(controller: idController),
-              Text("Insert the name:",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .apply(color: Colors.black)),
-              NameTextField(controller: nameController),
-              Text("Insert a description:",
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyLarge!
-                      .apply(color: Colors.black)),
-              DescriptionTextField(controller: descriptionController),
-              DefaultMaterialButton(
-                text: "Confirm",
-                fcn: confirmPressed,
-                icon: null,
-              ),
-            ],
+            ),
           ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

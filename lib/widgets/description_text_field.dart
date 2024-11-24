@@ -25,7 +25,10 @@ class _DescriptionTextFieldState extends State<DescriptionTextField> {
       widthFactor: 0.8,
       child: TextField(
         controller: widget.controller,
-        decoration: const InputDecoration(labelText: "Description"),
+        decoration: InputDecoration(
+            label: const Text("Description"),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10))),
         textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.bodyLarge!.apply(
               color: Colors.black,

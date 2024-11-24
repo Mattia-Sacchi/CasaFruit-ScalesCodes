@@ -23,6 +23,10 @@ class _NameTextFieldState extends State<NameTextField>
   Widget build(BuildContext context) {
     return FractionallySizedBox(widthFactor: 0.8,child:
     TextFormField(
+      decoration: InputDecoration(
+          label: const Text("Name"),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10))),
       validator: (value)
       {
         if (value == null || value.isEmpty) {
@@ -35,7 +39,6 @@ class _NameTextFieldState extends State<NameTextField>
         return null;
       },
       controller: widget.controller,
-      decoration: const InputDecoration(labelText: "Name"),
       textAlign: TextAlign.center,
       style: Theme.of(context).textTheme.bodyLarge!.apply(color: Colors.black,),
     ),);
