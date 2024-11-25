@@ -24,6 +24,7 @@ void failedAlert(BuildContext context,String text) {
 Widget buildSearchPage(BuildContext context, List<ScaleCode> scList)
 {
   return ListView.separated(
+    padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
     separatorBuilder: (context, index) {
       return const SizedBox(height: 20,);
     },

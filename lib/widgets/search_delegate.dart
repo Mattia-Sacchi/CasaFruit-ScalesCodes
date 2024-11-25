@@ -41,7 +41,7 @@ class CodesSearchDelegate extends SearchDelegate {
   }
 
   @override
-  InputDecorationTheme get searchFieldDecorationTheme => InputDecorationTheme(
+  InputDecorationTheme get searchFieldDecorationTheme => const InputDecorationTheme(
     hintStyle: TextStyle(color: Colors.grey),
 
     border: InputBorder.none,

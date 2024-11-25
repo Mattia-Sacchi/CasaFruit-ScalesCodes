@@ -4,7 +4,6 @@ import 'package:casa_fruit_scale_codes/screens/add_screen.dart';
 import 'package:casa_fruit_scale_codes/screens/edit_screen.dart';
 import 'package:casa_fruit_scale_codes/singletons/database.dart';
 import 'package:flutter/material.dart';
-
 import '../widgets/autocomplete_text_field.dart';
 import '../widgets/default_material_button.dart';
 

@@ -34,6 +34,7 @@ class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         actionsIconTheme: const IconThemeData(color: Colors.white),
         iconTheme: IconThemeData(color: Theme.of(context).canvasColor),
@@ -55,12 +56,8 @@ class _SearchScreenState extends State<SearchScreen> {
         ],
       ),
       body: _lst != null
-          ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-            child: SingleChildScrollView(
-              child: buildSearchPage(context, _lst!),
-            ),
-          )
+          ?
+            buildSearchPage(context, _lst!)
           : const SizedBox.shrink(),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
