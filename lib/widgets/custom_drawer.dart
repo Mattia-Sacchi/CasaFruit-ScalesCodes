@@ -1,7 +1,10 @@
 import 'dart:convert';
 
+import 'package:casa_fruit_scale_codes/objects/scale_code.dart';
 import 'package:casa_fruit_scale_codes/singletons/database.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -21,9 +24,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
     super.initState();
   }
 
-  void importClicked()
+  void importClicked() async
   {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+    );
 
+    if(result != null)
+    {
+       if(result.xFiles.isEmpty)
+         return;
+
+       Uint8List bytes = await result.xFiles.first.readAsBytes();
+       String output = String.fromCharCodes(bytes);
+
+       List<dynamic> temp = jsonDecode(output);
+
+       dbManager.importScaleCodes(temp).then(
+               (s)
+           {
+             ScaffoldMessenger.of(context).showSnackBar(
+               const SnackBar(
+                 content: Text('Imported with success'),
+               ),
+             );
+           }
+       );
+
+    }
   }
 
   void exportClicked() async
@@ -31,7 +61,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
     dbManager.scaleCodes().then(
         (scaleCodes)
         {
+
           String output = jsonEncode(scaleCodes);
+          print(output);
           Share.shareXFiles([XFile.fromData(utf8.encode(output), mimeType: 'text/plain')], fileNameOverrides: ['ScaleCodes.json']);
         }
     );

@@ -34,8 +34,9 @@ class ScaleCode {
 
   factory ScaleCode.fromJson(Map<String, dynamic> json) {
     return ScaleCode(
-      id: json['id'],
-      name: json['name'], description : json['description']
+      id: int.parse(json['id']) ,
+      name: json['name'],
+      description : json['description'] ?? ""
     );
   }
 

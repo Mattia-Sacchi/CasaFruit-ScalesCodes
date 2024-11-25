@@ -24,6 +24,27 @@ class DatabaseManager {
     await scaleCodes();
   }
 
+
+
+  Future<void> importScaleCodes(List<dynamic> lst) async
+  {
+    for (var elem in lst) {
+      await importData(elem);
+    }
+  }
+
+  Future<void> importScaleCode(ScaleCode sc) async
+  {
+    await insertScaleCode(sc);
+  }
+
+  Future<void> importData(Map<String,dynamic> sc) async
+  {
+    await importScaleCode(ScaleCode.fromJson(sc));
+  }
+
+
+
   Map<int,ScaleCode>? getActualMap()
   {
     return _scaleCodes;
