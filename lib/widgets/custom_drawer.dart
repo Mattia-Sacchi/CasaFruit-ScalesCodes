@@ -55,7 +55,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
   void exportClicked() async {
     dbManager.scaleCodes().then((scaleCodes) {
       String output = jsonEncode(scaleCodes);
-      print(output);
       Share.shareXFiles(
           [XFile.fromData(utf8.encode(output), mimeType: 'text/plain')],
           fileNameOverrides: ['ScaleCodes.json']);
