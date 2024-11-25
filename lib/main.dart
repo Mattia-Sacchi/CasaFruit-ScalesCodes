@@ -5,6 +5,7 @@ import 'package:casa_fruit_scale_codes/screens/search_screen.dart';
 import 'package:casa_fruit_scale_codes/widgets/default_material_button.dart';
 import 'package:casa_fruit_scale_codes/singletons/database.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 void main() {
@@ -82,7 +83,7 @@ class MyHomePage extends StatelessWidget {
                           ),
                       icon: Icons.edit),
                   const Flexible(flex: 1,child: SizedBox.expand(),),
-                  
+
                   FractionallySizedBox(
                     widthFactor: 0.8,
                     child: Image.network("https://static.vecteezy.com/system/resources/thumbnails/046/822/483/small_2x/a-vibrant-assortment-of-fresh-fruits-and-vegetables-isolated-on-a-transparent-background-free-png.png"),
@@ -126,11 +127,15 @@ class MyHomePage extends StatelessWidget {
                 onTap: () => throw UnimplementedError(),
                 leading: const Icon(Icons.import_export),
                 title: const Text("Import"),
+                subtitle: const Text('get data from file'),
               ),
               ListTile(
-                onTap: () => throw UnimplementedError(),
+                onTap:  ()  async {
+                  await Share.share('Hello, world!');
+                },
                 leading: const Icon(Icons.import_export),
                 title: const Text("Export"),
+                subtitle: const Text('Share your data'),
               ),
               const Flexible(flex:1 ,child: SizedBox.expand(),),
               Column(children: [
@@ -138,24 +143,46 @@ class MyHomePage extends StatelessWidget {
 
                 Text("Mattia Sacchi", style: Theme.of(context).textTheme.bodyLarge!.apply(color: Colors.black),),
 
-                IconButton(
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.transparent,
+                            child: Image.network('https://cdn-icons-png.flaticon.com/128/2111/2111425.png', width: 32, height: 32),),
+                            const Text('Github')
+                        ],
+                      ),
 
-                  icon: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.transparent,
-                        child: Image.network('https://cdn-icons-png.flaticon.com/128/2111/2111425.png', width: 32, height: 32),),
-                        const Text('Github')
-                    ],
-                  ),
+                        onPressed: ()
+                    {
+                      launchUrl(Uri.parse("https://github.com/Mattia-Sacchi"));
+                    }
 
-                    onPressed: ()
-                {
-                  launchUrl(Uri.parse("https://github.com/Mattia-Sacchi"));
-                }
+                    ),
+                    IconButton(
+                        icon: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              child: Image.network('https://imgs.search.brave.com/MspQtFIstYWh9I8XCeYe5l4nU74LF8jy4FSQ1wvWJAU/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4t/aWNvbnMtcG5nLmZs/YXRpY29uLmNvbS81/MTIvMTc0LzE3NDg1/Ny5wbmc', width: 32, height: 32),),
+                            const Text('Linkedin')
+                          ],
+                        ),
 
+                        onPressed: ()
+                        {
+                          launchUrl(Uri.parse("https://www.linkedin.com/in/mattiasacchi/"));
+                        }
+
+                    ),
+                  ],
                 ),
+
               const SizedBox(height: 50,),
 
             ],
