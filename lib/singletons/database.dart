@@ -24,6 +24,11 @@ class DatabaseManager {
     await scaleCodes();
   }
 
+  Map<int,ScaleCode>? getActualMap()
+  {
+    return _scaleCodes;
+  }
+
   Future<Database> _initDatabase() async {
     final databasesPath = await getDatabasesPath();
     final path = join(databasesPath, 'database.db');
